@@ -157,10 +157,27 @@ module my_awesome_6800(
 							program_counter = program_counter + 1;
 							$display("NOP pc=%H", program_counter);
 						end
+						8'h06: begin // TAP
+							program_counter = program_counter + 1;
+							condition_code_register <= accumulator_a;
+							$display("TAP");
+						end
+						8'h07: begin // TPA
+							program_counter = program_counter + 1;
+							accumulator_a <= condition_code_register;
+							$display("TPA");
+						end
 						8'h08: begin // INX
 							program_counter = program_counter + 1;
 							index_register = index_register + 1;
+							condition_code_register = (index_register == 8'h00) ? (condition_code_register | 8'h04) : (condition_code_register & ~8'h04);
 							$display("INX");
+						end
+						8'h09: begin // DEX
+							program_counter = program_counter + 1;
+							index_register = index_register - 1;
+							condition_code_register = (index_register == 8'h00) ? (condition_code_register | 8'h04) : (condition_code_register & ~8'h04);
+							$display("DEX");
 						end
 						8'h6E: begin // JMP data8,X
 							program_counter = instruction_byte_1 + index_register;

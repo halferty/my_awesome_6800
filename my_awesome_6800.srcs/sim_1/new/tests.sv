@@ -19,6 +19,32 @@ wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
 assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
 CLOCK_RUNNING = 0;
 
+// TEST INSTRUCTION 0x06 (TAP)
+CURRENT_TEST_NAME = "TAP";
+my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h06;
+my_awesome_6800_test.my_awesome_6800_inst.accumulator_a = 16'h33;
+my_awesome_6800_test.my_awesome_6800_inst.condition_code_register = 16'hFF;
+CLOCK_RUNNING = 1;
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
+assert (my_awesome_6800_test.my_awesome_6800_inst.condition_code_register == 8'h33);
+CLOCK_RUNNING = 0;
+
+// TEST INSTRUCTION 0x07 (TPA)
+CURRENT_TEST_NAME = "TPA";
+my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h07;
+my_awesome_6800_test.my_awesome_6800_inst.accumulator_a = 16'h33;
+my_awesome_6800_test.my_awesome_6800_inst.condition_code_register = 16'hFF;
+CLOCK_RUNNING = 1;
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
+assert (my_awesome_6800_test.my_awesome_6800_inst.accumulator_a == 8'hFF);
+CLOCK_RUNNING = 0;
+
 // TEST INSTRUCTION 0x08 (INX)
 CURRENT_TEST_NAME = "INX";
 my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
@@ -29,6 +55,40 @@ CLOCK_RUNNING = 1;
 wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
 assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
 assert (my_awesome_6800_test.my_awesome_6800_inst.index_register == 16'hA55B);
+CLOCK_RUNNING = 0;
+my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h08;
+my_awesome_6800_test.my_awesome_6800_inst.index_register = 16'hFFFF;
+my_awesome_6800_test.my_awesome_6800_inst.condition_code_register = 16'h11;
+CLOCK_RUNNING = 1;
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
+assert (my_awesome_6800_test.my_awesome_6800_inst.index_register == 16'h0000);
+assert (my_awesome_6800_test.my_awesome_6800_inst.condition_code_register == 16'h15);
+CLOCK_RUNNING = 0;
+
+// TEST INSTRUCTION 0x09 (DEX)
+CURRENT_TEST_NAME = "DEX";
+my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h09;
+my_awesome_6800_test.my_awesome_6800_inst.index_register = 16'hA55A;
+CLOCK_RUNNING = 1;
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
+assert (my_awesome_6800_test.my_awesome_6800_inst.index_register == 16'hA559);
+CLOCK_RUNNING = 0;
+my_awesome_6800_test.my_awesome_6800_inst.program_counter = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h09;
+my_awesome_6800_test.my_awesome_6800_inst.index_register = 16'h0000;
+my_awesome_6800_test.my_awesome_6800_inst.condition_code_register = 16'h15;
+CLOCK_RUNNING = 1;
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h0001);
+assert (my_awesome_6800_test.my_awesome_6800_inst.index_register == 16'hFFFF);
+assert (my_awesome_6800_test.my_awesome_6800_inst.condition_code_register == 16'h11);
 CLOCK_RUNNING = 0;
 
 // TEST INSTRUCTION 0x6E (JMP data8,X)
