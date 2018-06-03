@@ -153,29 +153,26 @@ module my_awesome_6800(
 					address_bus_register <= 16'hZ;
 					read_register <= 0;
 					case (instruction_byte_0)
-						8'h01: begin
-							program_counter <= program_counter + 1;
-							$display("NOP");
+						8'h01: begin // NOP
+							program_counter = program_counter + 1;
+							$display("NOP pc=%H", program_counter);
 						end
-						8'h08: begin
-							// INX
-							program_counter <= program_counter + 1;
-							index_register <= index_register + 1;
+						8'h08: begin // INX
+							program_counter = program_counter + 1;
+							index_register = index_register + 1;
 							$display("INX");
 						end
-						8'h6E: begin
-							// JMP data8,X
+						8'h6E: begin // JMP data8,X
 							program_counter = instruction_byte_1 + index_register;
 							$display("JMP data8,X %H", program_counter);
 						end
-						8'h7E: begin
-							// JMP addr16
+						8'h7E: begin // JMP addr16
 							program_counter = (instruction_byte_1 << 8) | instruction_byte_2;
 							$display("JMP addr16 %H", program_counter);
 						end
-						default: begin
+						default: begin // INVALID INSTRUCTION ENCOUNTERED
 							halted_due_to_error = 1;
-							$display("INVALID INSTRUCTION!!!");
+							$display("INVALID INSTRUCTION ENCOUNTERED!!!");
 						end
 					endcase
 					instruction_stage <= instruction_stage + 1;
