@@ -179,6 +179,11 @@ module my_awesome_6800(
 							condition_code_register = (index_register == 8'h00) ? (condition_code_register | 8'h04) : (condition_code_register & ~8'h04);
 							$display("DEX");
 						end
+						8'h0A: begin // CLV
+							program_counter = program_counter + 1;
+							condition_code_register = condition_code_register & ~8'h02;
+							$display("CLV");
+						end
 						8'h6E: begin // JMP data8,X
 							program_counter = instruction_byte_1 + index_register;
 							$display("JMP data8,X %H", program_counter);
