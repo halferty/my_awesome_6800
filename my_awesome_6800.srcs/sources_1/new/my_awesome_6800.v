@@ -157,6 +157,17 @@ module my_awesome_6800(
 							program_counter <= program_counter + 1;
 							$display("NOP");
 						end
+						8'h08: begin
+							// INX
+							program_counter <= program_counter + 1;
+							index_register <= index_register + 1;
+							$display("INX");
+						end
+						8'h6E: begin
+							// JMP data8,X
+							program_counter <= instruction_byte_1 + index_register;
+							$display("JMP data8,X");
+						end
 						8'h7E: begin
 							// JMP addr16
 							program_counter <= (instruction_byte_1 << 8) & instruction_byte_2;

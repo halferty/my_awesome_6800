@@ -66,6 +66,10 @@ module my_awesome_6800_test;
 		if (!reset) begin
 			CURRENT_CYCLE <= CURRENT_CYCLE + 1;
 		end
+		else
+		begin
+			CURRENT_CYCLE <= 0;
+		end
 	end
 
 endmodule
