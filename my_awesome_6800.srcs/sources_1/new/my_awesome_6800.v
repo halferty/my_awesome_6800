@@ -152,9 +152,6 @@ module my_awesome_6800(
 					// Deassert output lines. Execute.
 					address_bus_register <= 16'hZ;
 					read_register <= 0;
-					// TODO: Now run this...
-					// For testing, just assume that everything is a NOP and
-					// we just want to continue on to the next byte.
 					case (instruction_byte_0)
 						8'h01: begin
 							program_counter <= program_counter + 1;
@@ -166,10 +163,8 @@ module my_awesome_6800(
 							$display("JMP addr16");
 						end
 						default: begin
-							// halted_due_to_error = 1;
-							// $display("INVALID INSTRUCTION!!!");
-							program_counter <= program_counter + 1;
-							$display("NOP");
+							halted_due_to_error = 1;
+							$display("INVALID INSTRUCTION!!!");
 						end
 					endcase
 					instruction_stage <= instruction_stage + 1;
