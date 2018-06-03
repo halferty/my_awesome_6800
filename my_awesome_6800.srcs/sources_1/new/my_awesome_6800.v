@@ -59,7 +59,7 @@ module my_awesome_6800(
 	assign write = write_register;
 	assign bus_available = bus_available_register;
 	assign address_bus = address_bus_register;
-	assign data_bus = data_bus_register;
+	assign data_bus = write ? data_bus_register : 8'hZ;
 
 	// CPU stages:
 	//  0: Setup bus to read addr=program_counter
@@ -83,6 +83,7 @@ module my_awesome_6800(
 	reg [8:0]	data_to_write;
 	reg [15:0]	address_to_read_or_write;
 	reg [8:0]	read_result;
+	reg			halted_due_to_error = 0;
 
 	reg [8:0]	instruction_byte_0;
 	reg [8:0]	instruction_byte_1;
@@ -98,8 +99,10 @@ module my_awesome_6800(
 			condition_code_register <= 0;
 			bus_available_register <= 0;
 			instruction_stage <= 0;
+			read_register <= 0;
+			write_register <= 0;
 		end
-		if (!halt && !reset) begin
+		if (!halt && !halted_due_to_error && !reset) begin
 			case (instruction_stage)
 				0: begin
 					// Setup bus to read addr=program_counter
@@ -147,23 +150,26 @@ module my_awesome_6800(
 				9: begin
 					$display("instruction bytes: %H %H %H", instruction_byte_0, instruction_byte_1, instruction_byte_2);
 					// Deassert output lines. Execute.
-					address_bus_register <= 16'hBEEF;
+					address_bus_register <= 16'hZ;
 					read_register <= 0;
 					// TODO: Now run this...
 					// For testing, just assume that everything is a NOP and
 					// we just want to continue on to the next byte.
 					case (instruction_byte_0)
+						8'h01: begin
+							program_counter <= program_counter + 1;
+							$display("NOP");
+						end
 						8'h7E: begin
 							// JMP addr16
 							program_counter <= (instruction_byte_1 << 8) & instruction_byte_2;
 							$display("JMP addr16");
 						end
-						8'h01: begin
+						default: begin
+							// halted_due_to_error = 1;
+							// $display("INVALID INSTRUCTION!!!");
 							program_counter <= program_counter + 1;
 							$display("NOP");
-						end
-						default: begin
-							program_counter <= program_counter + 1;
 						end
 					endcase
 					instruction_stage <= instruction_stage + 1;
@@ -206,7 +212,7 @@ module my_awesome_6800(
 					read_register <= 0;
 					write_register <= 0;
 					data_bus_register <= 8'bZ;
-					address_bus_register <= 16'hBEEF;
+					address_bus_register <= 16'hZ;
 					bus_available_register <= 0;
 					instruction_stage <= 0;
 				end

@@ -31,7 +31,7 @@ module my_awesome_6800_test;
 		.halt(halt)
 		);
 
-	assign data_bus = data_bus_register;
+	assign data_bus = read ? data_bus_register : 8'hZ;
 
 	// Run tests
 	initial begin
@@ -52,16 +52,9 @@ module my_awesome_6800_test;
 	end
 
 	// Virtual ROM for testing
-	initial begin
-		while (RUNNING && CLOCK_RUNNING) begin
-			#1 // Simulator seems to break without this delay. Worth investigating...
-			if (read) begin
-				`include "virtual_rom_for_tests.sv"
-			end
-			else
-			begin
-				data_bus_register <= 8'hZ;
-			end
+	always @(clock) begin
+		if (RUNNING && CLOCK_RUNNING && read) begin
+			`include "virtual_rom_for_tests.sv"
 		end
 	end
 
