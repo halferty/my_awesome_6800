@@ -3,8 +3,22 @@ halt = 0;
 data_bus_disable = 0;
 tsc = 0;
 
-// TEST 1 - JMP addr16 - Test that we can make an infinite loop
+// TEST 1 - JMP addr16
 CURRENT_TEST_NAME = "JMP addr16";
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_0 = 8'h7E;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_1 = 8'h5A;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_byte_2 = 8'hA5;
+my_awesome_6800_test.my_awesome_6800_inst.instruction_stage = 9;
+reset = 0;
+CLOCK_RUNNING = 1;
+// Wait for the first instruction to be read.
+wait (my_awesome_6800_test.my_awesome_6800_inst.instruction_stage == 10);
+$display("pc=%H", my_awesome_6800_test.my_awesome_6800_inst.program_counter);
+assert (my_awesome_6800_test.my_awesome_6800_inst.program_counter == 16'h5AA5);
+CLOCK_RUNNING = 0;
+
+// INTEGRATION TEST 1 - Test that we can make an infinite loop w/ JMP addr16
+CURRENT_TEST_NAME = "infinite_loop_1 - JMP addr16";
 CLOCK_RUNNING = 1;
 // Pulse the reset line
 reset = 1; #10 reset = 0;
@@ -25,8 +39,8 @@ assert (address_bus == 8'h01);
 assert (data_bus_register == 8'h7E);
 CLOCK_RUNNING = 0;
 
-// TEST 2 - INX and JMP data8, X - Test that we can increment Index Register (X), and jump to data8+X
-CURRENT_TEST_NAME = "JMP data8,X";
+// INTEGRATION TEST 2 - Test that we can make an infinite loop w/ INX and JMP data8,X
+CURRENT_TEST_NAME = "infinite_loop_2 - JMP data8,X";
 CLOCK_RUNNING = 1;
 // Pulse the reset line
 reset = 1; #10 reset = 0;

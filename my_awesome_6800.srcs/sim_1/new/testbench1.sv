@@ -65,7 +65,6 @@ module my_awesome_6800_test;
 	always @(posedge clock) begin
 		if (!reset) begin
 			CURRENT_CYCLE <= CURRENT_CYCLE + 1;
-			$display("accumulator_a=%x", my_awesome_6800_test.my_awesome_6800_inst.accumulator_a);
 		end
 		else
 		begin

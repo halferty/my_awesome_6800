@@ -1,4 +1,4 @@
-if (CURRENT_TEST_NAME == "JMP addr16") begin
+if (CURRENT_TEST_NAME == "infinite_loop_1 - JMP addr16") begin
 	if (address_bus == 8'h00) begin
 		data_bus_register = 8'h01; // NOP
 	end
@@ -13,7 +13,7 @@ if (CURRENT_TEST_NAME == "JMP addr16") begin
 		data_bus_register = 8'hZ;
 	end
 end
-else if (CURRENT_TEST_NAME == "JMP data8,X") begin
+else if (CURRENT_TEST_NAME == "infinite_loop_2 - JMP data8,X") begin
 	if (address_bus == 8'h00) begin
 		data_bus_register = 8'h08; // INX
 	end
