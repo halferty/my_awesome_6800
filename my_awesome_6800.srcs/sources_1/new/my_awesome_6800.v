@@ -12,10 +12,10 @@
 // Description:		MyAwesome6800 - A CPU in Verilog which can run Motorola
 //					MC6800 instructions. This is not meant to be an accurate
 //					re-implementation of a MC6800, but instead is meant to be a
-//					simple 6800 that 6800 ISA fans can use intheir designs. Some
+//					simple 6800 that 6800 ISA fans can use in their designs. Some
 //					differences from the MC6800: Active-low inputs are now
 //					active-high. R//W has been split into two outputs (read and
-//					write). Timing is not followed, all instructions takes 14(!)
+//					write). Timing is not followed, all instructions take 14(!)
 //					clock cycles.
 //
 //
